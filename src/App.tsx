@@ -1,25 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { Board } from "./board";
+import { Square } from "./Square";
+
+const themes = {
+  lichess: {
+    light: "#f0d9b5",
+    dark: "#b58863",
+    selected: "#aaa23a"
+  },
+};
+export const ThemeContext = React.createContext(themes.lichess);
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeContext.Provider value={themes.lichess}>
+      <div className="App">
+      </div>
+    </ThemeContext.Provider>
   );
 }
 
