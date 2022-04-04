@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/material": "^5.5.3",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -67,6 +70,11 @@
     "@storybook/react": "^6.4.19",
     "@storybook/testing-library": "^0.0.9",
     "@types/styled-components": "^5.1.24",
+    "msw": "^0.39.2",
+    "msw-storybook-addon": "^1.6.1",
     "webpack": "^5.70.0"
+  },
+  "msw": {
+    "workerDirectory": "public"
   }
 }

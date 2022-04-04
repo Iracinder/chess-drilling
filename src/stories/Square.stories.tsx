@@ -4,7 +4,7 @@ import { ComponentStory, ComponentMeta } from "@storybook/react"
 import { Square } from "../Square"
 
 export default {
-  title: "Square",
+  title: "Board/Square",
   component: Square,
   argTypes: {
     selected: {"control" : "boolean", "defaultValue": false},

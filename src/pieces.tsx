@@ -14,9 +14,6 @@ import whiteRook from "./static/svgs/whiteRook.svg"
 
 const PieceSVG = styled.img`
   width: 100%;
-  /*position: absolute;
-  top: 0;
-  left: 0;*/
   display: flex
   grid-column: "1 / 1";
   grid-row: "1 / 1";

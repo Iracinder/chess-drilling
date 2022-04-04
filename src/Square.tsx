@@ -1,7 +1,9 @@
 import React, { Dispatch, SetStateAction, useContext } from "react"
 import styled from "styled-components"
-import { ThemeContext } from "./App"
+import { TurnContext } from "./contexts/turnContext"
+import { ThemeContext } from "./contexts/themeContext"
 import Piece, { PieceCharacter } from "./pieces"
+import { pieceColor } from "./utils"
 
 type HighlightProps = {
   className?: string
@@ -43,20 +45,36 @@ type SqaureProps = {
   selected?: boolean
   targeted?: boolean
   updateSelected: Dispatch<SetStateAction<number | undefined>>
+  updateTargeted: Dispatch<SetStateAction<number[]>>
+  move: (i: number) => Promise<void>
   i: number
 }
 
-export function Square({ background, pieceSymbol, selected, targeted, updateSelected, i}: SqaureProps) {
+export function Square({
+  background,
+  pieceSymbol,
+  selected,
+  targeted,
+  updateSelected,
+  updateTargeted,
+  move,
+  i,
+}: SqaureProps) {
   const theme = useContext(ThemeContext)
+  const { colorTurn } = useContext(TurnContext)
+
   if (pieceSymbol !== " " && targeted) {
     return (
       <StyledSquare
         backgroundColor={selected ? theme["selected"] : theme[background]}
-        onClick={() => updateSelected(selected ? undefined : i)}
+        onClick={async () => {
+          updateSelected(undefined)
+          move(i)
+        }}
       >
         <CornerHighlight
           color={theme["selected"]}
-          style={{ "grid-column": "1 / 1", "grid-row": "1 / 1" }}
+          style={{ gridColumn: "1 / 1", gridRow: "1 / 1" }}
         ></CornerHighlight>
         {Piece[pieceSymbol]}
       </StyledSquare>
@@ -65,14 +83,24 @@ export function Square({ background, pieceSymbol, selected, targeted, updateSele
     return (
       <StyledSquare
         backgroundColor={selected ? theme["selected"] : theme[background]}
-        onClick={() => updateSelected(selected ? undefined : i)}
+        onClick={async () => {
+          if (pieceColor(pieceSymbol) === colorTurn) {
+            updateSelected(selected ? undefined : i)
+          }
+        }}
       >
         {Piece[pieceSymbol]}
       </StyledSquare>
     )
   } else if (targeted) {
     return (
-      <StyledSquare backgroundColor={theme[background]} >
+      <StyledSquare
+        backgroundColor={theme[background]}
+        onClick={async () => {
+          updateSelected(undefined)
+          move(i)
+        }}
+      >
         <CircleHighlight color={theme["selected"]}></CircleHighlight>
       </StyledSquare>
     )
