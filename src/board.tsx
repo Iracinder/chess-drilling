@@ -37,14 +37,17 @@ export function Board({ initialFen }: Props) {
   const { selectedPGNs } = useContext(CPUContext)
 
   const move = async (i: number) => {
-    fetch(`${BASE_URL}/move?from=${selectedSquare}to=${i}`)
+    if (selectedSquare === undefined) {
+      return () => {}
+    }
+    fetch(`${BASE_URL}/moves?fen=${fen}&from_square=${convertSquareIdx(selectedSquare)}&to_square=${convertSquareIdx(i)}`)
       .then((response) => response.json())
       .then((fen: string) => setFen(fen))
   }
 
   useEffect(() => {
     if (selectedSquare) {
-      fetch(`${BASE_URL}/moves?fen=${fen}&square=${convertSquareIdx(selectedSquare)}`).then((response) =>
+      fetch(`${BASE_URL}/moves/possible_move?fen=${fen}&square=${convertSquareIdx(selectedSquare)}`).then((response) =>
         response.json().then((targets: number[]) => setTargetedSquares(targets.map(convertSquareIdx)))
       )
     } else {
