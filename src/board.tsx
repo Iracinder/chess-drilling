@@ -4,7 +4,7 @@ import { CPUContext } from "./contexts/PGNsContext"
 import { TurnContext } from "./contexts/turnContext"
 import { PieceCharacter } from "./pieces"
 import { Square } from "./Square"
-import { delay, fenColorTurn } from "./utils"
+import { convertSquareIdx, delay, fenColorTurn } from "./utils"
 
 const squareColor = (i: number) => {
   return (i + Math.floor(i / 8)) % 2 === 0 ? "light" : "dark"
@@ -26,7 +26,7 @@ type Props = {
 }
 
 // TODO: get it from env
-const BASE_URL = "http://localhost:6006"
+const BASE_URL = "http://localhost:8000"
 const WAITING_TIME = 0.5
 
 export function Board({ initialFen }: Props) {
@@ -44,8 +44,8 @@ export function Board({ initialFen }: Props) {
 
   useEffect(() => {
     if (selectedSquare) {
-      fetch(`${BASE_URL}/possible_moves/${selectedSquare}`).then((response) =>
-        response.json().then((targets: number[]) => setTargetedSquares(targets))
+      fetch(`${BASE_URL}/moves?fen=${fen}&square=${convertSquareIdx(selectedSquare)}`).then((response) =>
+        response.json().then((targets: number[]) => setTargetedSquares(targets.map(convertSquareIdx)))
       )
     } else {
       setTargetedSquares([])

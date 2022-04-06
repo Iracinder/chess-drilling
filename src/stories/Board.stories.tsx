@@ -12,11 +12,6 @@ const BASE_URL = "http://localhost:6006"
 export default {
   title: "Board",
   component: Board,
-  /*
-  argTypes: {
-    selected: {"control" : "boolean", "defaultValue": false},
-    targeted: {"control" : "boolean", "defaultValue": false},
-  }*/
 } as ComponentMeta<typeof Board>
 
 const Template: ComponentStory<typeof Board> = (args) => {

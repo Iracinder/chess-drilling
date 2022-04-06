@@ -13,8 +13,12 @@ export function nameFromFile(files?: FileList) {
   return Array.from(files).map((file) => file.name)
 }
 
-export function delay(n: number){
-	return new Promise(function(resolve){
-	    setTimeout(resolve,n*1000);
-	});
-    }
+export function delay(n: number) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, n * 1000)
+  })
+}
+
+export function convertSquareIdx(i: number) {
+  return (7 - Math.floor(i / 8)) * 8 + (i % 8)
+}
