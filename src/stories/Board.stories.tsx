@@ -19,7 +19,8 @@ const Template: ComponentStory<typeof Board> = (args) => {
   const [isDrilling, setIsDrilling] = useState<boolean>(true)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
-  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
+  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
   const initialCPUContext = {
     CPUMove: () => Promise.resolve(new Response()),
@@ -35,6 +36,8 @@ const Template: ComponentStory<typeof Board> = (args) => {
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,
     setMoveHistory: setMoveHistory,
+    fen: fen,
+    setFen: setFen,
   }
 
   return (

@@ -13,7 +13,8 @@ const Template: ComponentStory<typeof SidePanel> = () => {
   const [colorTurn, setColorTurn] = useState<"white" | "black">("white")
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
-  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
+  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
   const initialGameContext = {
     colorTurn: colorTurn,
@@ -24,6 +25,8 @@ const Template: ComponentStory<typeof SidePanel> = () => {
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,
     setMoveHistory: setMoveHistory,
+    fen: fen,
+    setFen: setFen,
   }
   return (
     <GameContext.Provider value={initialGameContext}>

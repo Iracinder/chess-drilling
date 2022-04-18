@@ -15,5 +15,5 @@ const Template: ComponentStory<typeof GamePanel> = (args) => {
 export const Default = Template.bind({})
 
 Default.args = {
-  initialTree: ["e4", "e5", "Nf3", "Bb4", "f4"],
+  initialTree: {'1e5': {'san': 'e4', 'uci': 'e4e5', 'fen': "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1"}}
 }

@@ -9,7 +9,7 @@ export function SidePanel() {
     <Box display="grid" gridTemplateColumns="repeat(1, 1fr)">
       <DrillPanel availablePGNs={[]}></DrillPanel>
       <PlayerPanel></PlayerPanel>
-      <GamePanel initialTree={[]}></GamePanel>
+      <GamePanel initialTree={{}}></GamePanel>
     </Box>
   )
 }

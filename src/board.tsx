@@ -32,26 +32,38 @@ const WAITING_TIME = 0.5
 export function Board({ initialFen }: Props) {
   const [selectedSquare, setSelectedSquare] = useState<number>()
   const [targetedSquares, setTargetedSquares] = useState<number[]>([])
-  const [fen, setFen] = useState<string>(initialFen)
-  const { setColorTurn, playerColor, moveHistory, setMoveHistory } = useContext(GameContext)
+  const { fen, setFen, setColorTurn, playerColor, moveHistory, setMoveHistory } =
+    useContext(GameContext)
   const { selectedPGNs, isDrilling } = useContext(CPUContext)
 
   const move = async (i: number) => {
     if (selectedSquare === undefined) {
-      return await new Promise<void>(resolve => resolve())
+      return await new Promise<void>((resolve) => resolve())
     }
-    fetch(`${BASE_URL}/moves?fen=${fen}&from_square=${convertSquareIdx(selectedSquare)}&to_square=${convertSquareIdx(i)}`)
+    fetch(
+      `${BASE_URL}/moves?fen=${fen}&from_square=${convertSquareIdx(
+        selectedSquare
+      )}&to_square=${convertSquareIdx(i)}`
+    )
       .then((response) => response.json())
-      .then(({fen, uci, san}) => {
+      .then(({ fen, uci, san, move_number }) => {
         setFen(fen)
-        setMoveHistory([...moveHistory, san])
+        setMoveHistory({ ...moveHistory, [move_number + san]: { fen, uci, san } })
       })
   }
 
   useEffect(() => {
     if (selectedSquare) {
-      fetch(`${BASE_URL}/moves/possible_move?fen=${fen}&square=${convertSquareIdx(selectedSquare)}`).then((response) =>
-        response.json().then((targets: number[]) => setTargetedSquares(targets.map(convertSquareIdx)))
+      fetch(
+        `${BASE_URL}/moves/possible_move?fen=${fen}&square=${convertSquareIdx(
+          selectedSquare
+        )}`
+      ).then((response) =>
+        response
+          .json()
+          .then((targets: number[]) =>
+            setTargetedSquares(targets.map(convertSquareIdx))
+          )
       )
     } else {
       setTargetedSquares([])

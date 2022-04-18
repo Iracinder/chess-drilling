@@ -13,7 +13,8 @@ function App() {
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
-  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
+  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
   const initialGameContext = {
     colorTurn: colorTurn,
@@ -22,6 +23,8 @@ function App() {
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,
     setMoveHistory: setMoveHistory,
+    fen: fen,
+    setFen: setFen,
   }
 
   const initialCPUContext = {

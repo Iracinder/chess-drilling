@@ -15,7 +15,8 @@ const Template: ComponentStory<typeof DrillPanel> = (args) => {
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
-  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
+  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 
   const initialGameContext = {
     colorTurn: colorTurn,
@@ -24,6 +25,8 @@ const Template: ComponentStory<typeof DrillPanel> = (args) => {
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,
     setMoveHistory: setMoveHistory,
+    fen: fen,
+    setFen: setFen,
   }
 
   const initialCPUContext = {
