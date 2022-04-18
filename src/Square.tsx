@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useContext } from "react"
 import styled from "styled-components"
-import { TurnContext } from "./contexts/turnContext"
+import { GameContext } from "./contexts/GameContext"
 import { ThemeContext } from "./contexts/themeContext"
 import Piece, { PieceCharacter } from "./pieces"
 import { pieceColor } from "./utils"
@@ -61,7 +61,7 @@ export function Square({
   i,
 }: SqaureProps) {
   const theme = useContext(ThemeContext)
-  const { colorTurn } = useContext(TurnContext)
+  const { colorTurn } = useContext(GameContext)
 
   if (pieceSymbol !== " " && targeted) {
     return (

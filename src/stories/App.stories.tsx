@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 
-import { TurnContext } from "../contexts/turnContext"
-import { CPUContext } from "../contexts/PGNsContext"
+import { GameContext, MoveTree } from "../contexts/GameContext"
+import { CPUContext } from "../contexts/CPUContext"
 
 import { ComponentMeta, ComponentStory } from "@storybook/react"
 import App from "../App"
@@ -17,27 +17,30 @@ const Template: ComponentStory<typeof App> = () => {
   const [isDrilling, setIsDrilling] = useState<boolean>(true)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
 
   const initialCPUContext = {
     CPUMove: () => Promise.resolve(new Response()),
     selectedPGNs: selectedPGNs,
     setSelectedPGNs: setSelectedPGNs,
-  }
-  const initialTurnContext = {
-    colorTurn: colorTurn,
-    setColorTurn: setColorTurn,
     isDrilling: isDrilling,
     setIsDrilling: setIsDrilling,
+  }
+  const initialGameContext = {
+    colorTurn: colorTurn,
+    setColorTurn: setColorTurn,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
+    moveHistory: moveHistory,
+    setMoveHistory: setMoveHistory,
   }
 
   return (
-    <TurnContext.Provider value={initialTurnContext}>
+    <GameContext.Provider value={initialGameContext}>
       <CPUContext.Provider value={initialCPUContext}>
         <App />
       </CPUContext.Provider>
-    </TurnContext.Provider>
+    </GameContext.Provider>
   )
 }
 
@@ -66,7 +69,7 @@ Mocked.parameters = {
         return res(
           ctx.json("1r4k1/1bp5/p2p4/1p2pPq1/4P3/2NPn3/PPP3PP/4R1K1 w - - 2 24")
         )
-      })
+      }),
     ],
   },
 }

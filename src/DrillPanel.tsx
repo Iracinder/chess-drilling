@@ -7,8 +7,7 @@ import {
   Typography,
 } from "@mui/material"
 import React, { useContext, useState } from "react"
-import { CPUContext } from "./contexts/PGNsContext"
-import { TurnContext } from "./contexts/turnContext"
+import { CPUContext } from "./contexts/CPUContext"
 import { nameFromFile } from "./utils"
 
 type Props = {
@@ -16,7 +15,7 @@ type Props = {
 }
 
 export default function DrillPanel({availablePGNs}: Props) {
-  const { isDrilling, setIsDrilling } = useContext(TurnContext)
+  const { isDrilling, setIsDrilling } = useContext(CPUContext)
   const [files, setFiles] = useState<string[]>(availablePGNs)
   const { selectedPGNs, setSelectedPGNs } = useContext(CPUContext)
 

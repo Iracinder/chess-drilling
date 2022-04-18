@@ -1,9 +1,9 @@
 import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material"
 import React, { useContext } from "react"
-import { TurnContext } from "./contexts/turnContext"
+import { GameContext } from "./contexts/GameContext"
 
 export function PlayerPanel() {
-  const { playerColor, setPlayerColor } = useContext(TurnContext)
+  const { playerColor, setPlayerColor } = useContext(GameContext)
   return (
     <Typography>
       Playing as

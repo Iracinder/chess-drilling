@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
-import { CPUContext } from "./contexts/PGNsContext"
-import { TurnContext } from "./contexts/turnContext"
+import { CPUContext } from "./contexts/CPUContext"
+import { GameContext } from "./contexts/GameContext"
 import { PieceCharacter } from "./pieces"
 import { Square } from "./Square"
 import { convertSquareIdx, delay, fenColorTurn } from "./utils"
@@ -33,16 +33,19 @@ export function Board({ initialFen }: Props) {
   const [selectedSquare, setSelectedSquare] = useState<number>()
   const [targetedSquares, setTargetedSquares] = useState<number[]>([])
   const [fen, setFen] = useState<string>(initialFen)
-  const { setColorTurn, isDrilling, playerColor } = useContext(TurnContext)
-  const { selectedPGNs } = useContext(CPUContext)
+  const { setColorTurn, playerColor, moveHistory, setMoveHistory } = useContext(GameContext)
+  const { selectedPGNs, isDrilling } = useContext(CPUContext)
 
   const move = async (i: number) => {
     if (selectedSquare === undefined) {
-      return () => {}
+      return await new Promise<void>(resolve => resolve())
     }
     fetch(`${BASE_URL}/moves?fen=${fen}&from_square=${convertSquareIdx(selectedSquare)}&to_square=${convertSquareIdx(i)}`)
       .then((response) => response.json())
-      .then((fen: string) => setFen(fen))
+      .then(({fen, uci, san}) => {
+        setFen(fen)
+        setMoveHistory([...moveHistory, san])
+      })
   }
 
   useEffect(() => {
@@ -53,7 +56,7 @@ export function Board({ initialFen }: Props) {
     } else {
       setTargetedSquares([])
     }
-  }, [selectedSquare])
+  }, [fen, selectedSquare])
 
   useEffect(() => {
     const currentTurnColor = fenColorTurn(fen)

@@ -3,8 +3,8 @@ import { rest } from "msw"
 
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import { Board } from "../board"
-import { TurnContext } from "../contexts/turnContext"
-import { CPUContext } from "../contexts/PGNsContext"
+import { GameContext, MoveTree } from "../contexts/GameContext"
+import { CPUContext } from "../contexts/CPUContext"
 
 // TODO: get it from env
 const BASE_URL = "http://localhost:6006"
@@ -19,27 +19,30 @@ const Template: ComponentStory<typeof Board> = (args) => {
   const [isDrilling, setIsDrilling] = useState<boolean>(true)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
 
   const initialCPUContext = {
     CPUMove: () => Promise.resolve(new Response()),
     selectedPGNs: selectedPGNs,
     setSelectedPGNs: setSelectedPGNs,
-  }
-  const initialTurnContext = {
-    colorTurn: colorTurn,
-    setColorTurn: setColorTurn,
     isDrilling: isDrilling,
     setIsDrilling: setIsDrilling,
+  }
+  const initialGameContext = {
+    colorTurn: colorTurn,
+    setColorTurn: setColorTurn,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
+    moveHistory: moveHistory,
+    setMoveHistory: setMoveHistory,
   }
 
   return (
-    <TurnContext.Provider value={initialTurnContext}>
+    <GameContext.Provider value={initialGameContext}>
       <CPUContext.Provider value={initialCPUContext}>
         <Board {...args} />
       </CPUContext.Provider>
-    </TurnContext.Provider>
+    </GameContext.Provider>
   )
 }
 
@@ -52,7 +55,7 @@ Empty.args = {
 Empty.parameters = {
   msw: {
     handlers: [
-      rest.get(`${BASE_URL}/possible_moves/:id`, (req, res, ctx) => {
+      rest.get(`${BASE_URL}/moves/possible_moves/:id`, (req, res, ctx) => {
         const { id } = req.params
         if (typeof id === "string") {
           const i = parseInt(id)
@@ -69,7 +72,7 @@ Empty.parameters = {
         return res(
           ctx.json("1r4k1/1bp5/p2p4/1p2pPq1/4P3/2NPn3/PPP3PP/4R1K1 w - - 2 24")
         )
-      })
+      }),
     ],
   },
 }

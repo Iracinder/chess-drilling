@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 
 import { ComponentStory, ComponentMeta } from "@storybook/react"
-import { TurnContext } from "../contexts/turnContext"
+import { GameContext, MoveTree } from "../contexts/GameContext"
 import DrillPanel from "../DrillPanel"
-import { CPUContext } from "../contexts/PGNsContext"
+import { CPUContext } from "../contexts/CPUContext"
 
 export default {
   title: "SidePanel/DrillPanel",
@@ -15,28 +15,31 @@ const Template: ComponentStory<typeof DrillPanel> = (args) => {
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
 
-  const initialTurnContext = {
+  const initialGameContext = {
     colorTurn: colorTurn,
     setColorTurn: setColorTurn,
-    isDrilling: isDrilling,
-    setIsDrilling: setIsDrilling,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
+    moveHistory: moveHistory,
+    setMoveHistory: setMoveHistory,
   }
 
   const initialCPUContext = {
     CPUMove: () => Promise.resolve(new Response()),
     selectedPGNs: selectedPGNs,
     setSelectedPGNs: setSelectedPGNs,
+    isDrilling: isDrilling,
+    setIsDrilling: setIsDrilling,
   }
 
   return (
-    <TurnContext.Provider value={initialTurnContext}>
+    <GameContext.Provider value={initialGameContext}>
       <CPUContext.Provider value={initialCPUContext}>
         <DrillPanel {...args} />
       </CPUContext.Provider>
-    </TurnContext.Provider>
+    </GameContext.Provider>
   )
 }
 

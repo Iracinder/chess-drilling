@@ -2,7 +2,7 @@ import React, { useState } from "react"
 
 import { ComponentStory, ComponentMeta } from "@storybook/react"
 import { SidePanel } from "../SidePanel"
-import { TurnContext } from "../contexts/turnContext"
+import { GameContext, MoveTree } from "../contexts/GameContext"
 
 export default {
   title: "SidePanel",
@@ -13,18 +13,22 @@ const Template: ComponentStory<typeof SidePanel> = () => {
   const [colorTurn, setColorTurn] = useState<"white" | "black">("white")
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
-  const initialTurnContext = {
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+
+  const initialGameContext = {
     colorTurn: colorTurn,
     setColorTurn: setColorTurn,
     isDrilling: isDrilling,
     setIsDrilling: setIsDrilling,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
+    moveHistory: moveHistory,
+    setMoveHistory: setMoveHistory,
   }
   return (
-    <TurnContext.Provider value={initialTurnContext}>
+    <GameContext.Provider value={initialGameContext}>
       <SidePanel />
-    </TurnContext.Provider>
+    </GameContext.Provider>
   )
 }
 
