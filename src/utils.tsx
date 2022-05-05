@@ -10,7 +10,7 @@ export function nameFromFile(files?: FileList) {
   if (files === undefined) {
     return []
   }
-  return Array.from(files).map((file) => file.name)
+  return Array.from(files).map((file) => file.name.replace(".pgn", ""))
 }
 
 export function delay(n: number) {

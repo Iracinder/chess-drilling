@@ -1,12 +1,12 @@
-import { ToggleButtonGroup, ToggleButton, Typography } from "@mui/material"
+import { ToggleButtonGroup, ToggleButton, Typography, Box } from "@mui/material"
 import React, { useContext } from "react"
 import { GameContext } from "./contexts/GameContext"
 
 export function PlayerPanel() {
   const { playerColor, setPlayerColor } = useContext(GameContext)
   return (
-    <Typography>
-      Playing as
+    <Box display="flex">
+      <Typography>Playing as</Typography>
       <ToggleButtonGroup
         exclusive
         value={playerColor}
@@ -18,6 +18,6 @@ export function PlayerPanel() {
         <ToggleButton value="white">White</ToggleButton>
         <ToggleButton value="black">Black</ToggleButton>
       </ToggleButtonGroup>
-    </Typography>
+    </Box>
   )
 }

@@ -14,7 +14,7 @@ type Props = {
   availablePGNs: string[]
 }
 
-export default function DrillPanel({availablePGNs}: Props) {
+export default function DrillPanel({ availablePGNs }: Props) {
   const { isDrilling, setIsDrilling } = useContext(CPUContext)
   const [files, setFiles] = useState<string[]>(availablePGNs)
   const { selectedPGNs, setSelectedPGNs } = useContext(CPUContext)
@@ -38,8 +38,10 @@ export default function DrillPanel({availablePGNs}: Props) {
           multiple
           hidden
           onChange={(e) => {
-            // @ts-ignore
-            setFiles([...new Set([...availablePGNs, ...nameFromFile(e.target.files)])])
+            setFiles([
+              // @ts-ignore
+              ...new Set([...availablePGNs, ...nameFromFile(e.target.files)]),
+            ])
           }}
         />
       </Button>
