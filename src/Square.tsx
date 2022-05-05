@@ -3,7 +3,7 @@ import styled from "styled-components"
 import { GameContext } from "./contexts/GameContext"
 import { ThemeContext } from "./contexts/themeContext"
 import Piece, { PieceCharacter } from "./pieces"
-import { pieceColor } from "./utils"
+import { fenColorTurn, pieceColor } from "./utils"
 
 type HighlightProps = {
   className?: string
@@ -61,7 +61,7 @@ export function Square({
   i,
 }: SqaureProps) {
   const theme = useContext(ThemeContext)
-  const { colorTurn } = useContext(GameContext)
+  const { fen } = useContext(GameContext)
 
   if (pieceSymbol !== " " && targeted) {
     return (
@@ -84,7 +84,7 @@ export function Square({
       <StyledSquare
         backgroundColor={selected ? theme["selected"] : theme[background]}
         onClick={async () => {
-          if (pieceColor(pieceSymbol) === colorTurn) {
+          if (pieceColor(pieceSymbol) === fenColorTurn(fen)) {
             updateSelected(selected ? undefined : i)
           }
         }}

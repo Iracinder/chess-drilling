@@ -10,15 +10,14 @@ export default {
 } as ComponentMeta<typeof PlayerPanel>
 
 const Template: ComponentStory<typeof PlayerPanel> = () => {
-  const [colorTurn, setColorTurn] = useState<"white" | "black">("white")
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
-  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
-  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [fen, setFen] = useState<string>(
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  )
 
   const GameTurnContext = {
-    colorTurn: colorTurn,
-    setColorTurn: setColorTurn,
     isDrilling: isDrilling,
     setIsDrilling: setIsDrilling,
     playerColor: playerColor,
@@ -30,7 +29,7 @@ const Template: ComponentStory<typeof PlayerPanel> = () => {
   }
   return (
     <GameContext.Provider value={GameTurnContext}>
-      <PlayerPanel/>
+      <PlayerPanel />
     </GameContext.Provider>
   )
 }

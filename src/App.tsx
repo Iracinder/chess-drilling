@@ -9,16 +9,15 @@ import { SidePanel } from "./SidePanel"
 import { Box } from "@mui/material"
 
 function App() {
-  const [colorTurn, setColorTurn] = useState<"white" | "black">("white")
   const [isDrilling, setIsDrilling] = useState<boolean>(false)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
-  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
-  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [fen, setFen] = useState<string>(
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  )
 
   const initialGameContext = {
-    colorTurn: colorTurn,
-    setColorTurn: setColorTurn,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,
@@ -39,7 +38,7 @@ function App() {
     <ThemeContext.Provider value={themes.lichess}>
       <GameContext.Provider value={initialGameContext}>
         <CPUContext.Provider value={initialCPUContext}>
-          <Box className="App" display='flex'>
+          <Box className="App" display="flex">
             <Board initialFen="rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"></Board>
             <SidePanel />
           </Box>

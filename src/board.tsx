@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import { CPUContext } from "./contexts/CPUContext"
-import { GameContext } from "./contexts/GameContext"
+import { GameContext, Move } from "./contexts/GameContext"
 import { PieceCharacter } from "./pieces"
 import { Square } from "./Square"
 import { convertSquareIdx, delay, fenColorTurn } from "./utils"
@@ -32,7 +32,7 @@ const WAITING_TIME = 0.5
 export function Board({ initialFen }: Props) {
   const [selectedSquare, setSelectedSquare] = useState<number>()
   const [targetedSquares, setTargetedSquares] = useState<number[]>([])
-  const { fen, setFen, setColorTurn, playerColor, moveHistory, setMoveHistory } =
+  const { fen, setFen, playerColor, moveHistory, setMoveHistory } =
     useContext(GameContext)
   const { selectedPGNs, isDrilling } = useContext(CPUContext)
 
@@ -40,22 +40,24 @@ export function Board({ initialFen }: Props) {
     if (selectedSquare === undefined) {
       return await new Promise<void>((resolve) => resolve())
     }
-    fetch(
-      `${BASE_URL}/moves?fen=${fen}&from_square=${convertSquareIdx(
+    const response = await fetch(
+      `${BASE_URL}/player/move?fen=${fen}&from_square=${convertSquareIdx(
         selectedSquare
       )}&to_square=${convertSquareIdx(i)}`
     )
-      .then((response) => response.json())
-      .then(({ fen, uci, san, move_number }) => {
-        setFen(fen)
-        setMoveHistory({ ...moveHistory, [move_number + san]: { fen, uci, san } })
-      })
+    const js = await response.json()
+    const _moveHistory = [
+      ...moveHistory,
+      { fen: js["fen"], uci: js["uci"], san: js["san"] } as Move,
+    ]
+    setFen(js["fen"])
+    setMoveHistory(_moveHistory)
   }
 
   useEffect(() => {
     if (selectedSquare) {
       fetch(
-        `${BASE_URL}/moves/possible_move?fen=${fen}&square=${convertSquareIdx(
+        `${BASE_URL}/player/possible_moves?fen=${fen}&square=${convertSquareIdx(
           selectedSquare
         )}`
       ).then((response) =>
@@ -71,21 +73,34 @@ export function Board({ initialFen }: Props) {
   }, [fen, selectedSquare])
 
   useEffect(() => {
-    const currentTurnColor = fenColorTurn(fen)
-    setColorTurn(currentTurnColor)
-
     const playCpuMove = async () => {
-      if (isDrilling && playerColor !== currentTurnColor) {
+      if (isDrilling && playerColor !== fenColorTurn(fen)) {
         await delay(WAITING_TIME)
-        const data = { fen, selectedPGNs }
-        fetch(`${BASE_URL}/cpu_move`, {
+        const data = { selected_pgns: selectedPGNs, move_history: moveHistory }
+        const response = await fetch(`${BASE_URL}/cpu/move`, {
           method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(data),
-        }).then((response) => response.json().then((fen) => setFen(fen)))
+        })
+
+        const { FEN, move_history } = await response.json()
+        setMoveHistory(move_history)
+        setFen(FEN)
       }
     }
     playCpuMove()
-  }, [fen, isDrilling, playerColor, selectedPGNs, setColorTurn])
+  }, [
+    moveHistory,
+    isDrilling,
+    playerColor,
+    fen,
+    selectedPGNs,
+    setMoveHistory,
+    setFen,
+  ])
 
   return (
     <GridBoard>

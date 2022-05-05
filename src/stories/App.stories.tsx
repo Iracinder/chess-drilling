@@ -13,12 +13,13 @@ export default {
 } as ComponentMeta<typeof App>
 
 const Template: ComponentStory<typeof App> = () => {
-  const [colorTurn, setColorTurn] = useState<"white" | "black">("white")
   const [isDrilling, setIsDrilling] = useState<boolean>(true)
   const [playerColor, setPlayerColor] = useState<"white" | "black">("white")
   const [selectedPGNs, setSelectedPGNs] = useState<string[]>([])
-  const [moveHistory, setMoveHistory] = useState<MoveTree>({})
-  const [fen, setFen] = useState<string>("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+  const [moveHistory, setMoveHistory] = useState<MoveTree>([])
+  const [fen, setFen] = useState<string>(
+    "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+  )
 
   const initialCPUContext = {
     CPUMove: () => Promise.resolve(new Response()),
@@ -28,8 +29,6 @@ const Template: ComponentStory<typeof App> = () => {
     setIsDrilling: setIsDrilling,
   }
   const initialGameContext = {
-    colorTurn: colorTurn,
-    setColorTurn: setColorTurn,
     playerColor: playerColor,
     setPlayerColor: setPlayerColor,
     moveHistory: moveHistory,

@@ -19,21 +19,21 @@ export function GamePanel({ initialTree }: { initialTree: MoveTree }) {
       <Typography variant="h3" style={{ gridColumn: "span 2" }} color="white">
         Moves
       </Typography>
-      {Object.entries(moveHistory).map(([key, value], i) => {
+      {moveHistory.map(({ san }, i) => {
         return (
           <Box
             style={{ background: i % 2 ? "lightgrey" : "white" }}
             margin="1px"
-            data-history-key={key}/*Math.floor(i / 2) + 1 + value.san}*/
+            key={i}
+            data-history-key={i}
             onClick={(event) => {
               const historyKey = event.currentTarget.dataset.historyKey
               if (historyKey !== undefined) {
-                console.log(moveHistory)
-                setFen(moveHistory[historyKey]["fen"])
+                setFen(moveHistory[i]["fen"])
               }
             }}
           >
-            {value.san}
+            {san}
           </Box>
         )
       })}
